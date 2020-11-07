@@ -14,7 +14,7 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <v-text-field v-model='city' placeholder='Enter a City'></v-text-field>
+                  <v-text-field v-model='city' placeholder='Enter a City' @keypress.native='onKeyPress'></v-text-field>
                   <v-btn v-on:click='getData'>Submit</v-btn>
                 </v-col>
               </v-row>
@@ -25,11 +25,14 @@
               <v-card-text class='body-1' v-if='info === null'>Please enter a city to get a forecast</v-card-text>
               <v-card-text v-if='info != null' class='display-1'>{{info.weather[0].description}} <v-icon>{{weatherConditionIcons[0].cloud}}</v-icon></v-card-text>
               <!-- <v-btn v-on:click='timeFunction'>Get</v-btn> -->
-              <v-card-text class='display-4' v-if='info != null'>{{Math.round(info.main.temp - 273.15)}}°</v-card-text>
-              <!-- Below needs to be done after the call to the api.  -->
-              <v-icon v-if='time < sunrise'>{{timeOfDayIcons.night}}</v-icon>
-              <v-icon v-if='time > sunrise && time < sunset'>{{timeOfDayIcons.day}}</v-icon>
-              <v-icon v-if='time > sunset'>{{timeOfDayIcons.night}}</v-icon>
+              <v-card-text class='display-4' v-if='info != null'>{{Math.round(info.main.temp - 273.15)}}°
+                <!-- Below needs to be done after the call to the api.  -->
+                <v-icon v-if='time < sunrise'x-large >{{timeOfDayIcons.night}}</v-icon>
+                <v-icon v-if='time > sunrise && time < sunset'x-large color='yellow'>{{timeOfDayIcons.day}}</v-icon>
+                <v-icon v-if='time > sunset' x-large>{{timeOfDayIcons.night}}</v-icon>
+              </v-card-text>
+
+
             </v-col>
           </v-row>
         </v-card>
@@ -100,10 +103,9 @@ export default {
       axios.get(`https://community-open-weather-map.p.rapidapi.com/weather`, {
           params: {
             q: this.city,
-
           },
           headers: {
-            'x-rapidapi-key': '42d6dfc595mshb4a08a510dffa91p1acd3ejsn2b8e894442c0',
+            'x-rapidapi-key': '<RAPID API KEY HERE>',
             'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com'
           }
         })
@@ -122,10 +124,11 @@ export default {
       console.log(this.city);
     },
 
-    timeFunction: function() {
-      this.sunset = this.info.sys.sunset;
-      this.sunrise = this.info.sys.sunrise;
-      this.time = this.info.dt;
+    timeConvert: function() {
+
+    },
+    onKeyPress: function (){
+
     }
   },
 
