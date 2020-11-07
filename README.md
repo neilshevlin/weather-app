@@ -1,3 +1,5 @@
+You will need a rapid api key for this project to work. 
+
 # weather-app
 
 ## Project setup
